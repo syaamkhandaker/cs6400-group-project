@@ -1,0 +1,9 @@
+numpy
+pyyaml
+tqdm
+rank_bm25
+sentence-transformers
+faiss-cpu
+transformers
+google-genai
+pytest

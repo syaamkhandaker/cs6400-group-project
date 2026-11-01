@@ -1,0 +1,37 @@
+chunking:
+  max_tokens: 200            # encoder limit 256, minus room for title/section prefix
+  tokenizer: sentence-transformers/all-MiniLM-L6-v2
+
+dense:
+  model: sentence-transformers/all-MiniLM-L6-v2   # Hugging Face embedder; see src/rag/embeddings.py
+  batch_size: 64
+
+cache:
+  dir: cache/embeddings       # chunks.jsonl + vectors.npy, keyed by config hash
+  batch_size: 256             # batch size used by scripts/build_cache.py
+
+sparse:
+  k1: 1.5
+  b: 0.75
+
+retrieval:
+  k_each: 100                # top-k pulled from each retriever before fusion
+  n_candidates: 30           # top-n kept from each fusion method (proposal: 20-30)
+  alpha: 0.5                 # weighted-fusion dense weight; tune on validation
+  rrf_k: 60
+  final_k: 10
+
+rerank:
+  model: cross-encoder/ms-marco-MiniLM-L-6-v2
+  batch_size: 32
+
+generation:
+  provider: ollama
+  model: llama3.2                      # any model from `ollama list`; see src/rag/llm.py
+  base_url: http://127.0.0.1:11434     # override with OLLAMA_HOST
+  context_chunks: 5
+  temperature: 0.0
+
+eval:
+  qa_subset_size: 200
+  seed: 13
